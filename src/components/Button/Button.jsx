@@ -1,7 +1,7 @@
 export const Button = ({ onClick }) => {
   return (
-    <div>
-      <button type="button" onClick={onClick}>
+    <div className="Button-Wrapper">
+      <button type="button" onClick={onClick} className="Button">
         Load more
       </button>
     </div>

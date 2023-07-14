@@ -7,11 +7,12 @@ import React, { Component } from 'react';
 // import "simplelightbox/dist/simple-lightbox.min.css";
 
 import { fetchFotos } from './services/fetchFotoApi';
-
 import { SearchBar } from './SearchBar';
 import { ImageGallery } from './ImageGallery/';
 import { ImageGalleryItem } from './ImageGalleryItem';
 import { Button } from './Button';
+import { Loader } from './Loader';
+// import { Modal } from './Modal';
 
 export class App extends Component {
   state = {
@@ -20,6 +21,15 @@ export class App extends Component {
     images: [],
     isLoading: false,
     error: null,
+    totalPages: 0,
+    isModalOpen: false,
+    imageURL: '',
+  };
+
+  getURL = imageURL => {
+    this.setState({ imageURL: imageURL, isModalOpen: true }, () =>
+      console.log('URL', imageURL, 'isModalOpen', this.state.isModalOpen)
+    );
   };
 
   getQuery = event => {
@@ -48,16 +58,23 @@ export class App extends Component {
     this.setState({ isLoading: true });
 
     try {
-      const { searchQuery, currentPage } = this.state;
-      const images = await fetchFotos(searchQuery, currentPage);
+      const { searchQuery, currentPage, totalPages } = this.state;
+
+      const data = await fetchFotos(searchQuery, currentPage);
+      const images = data.hits;
+      this.setState({ totalPages: Math.ceil(data.total / 40) });
       console.log('IMAGES:', images);
 
       if (this.state.currentPage === 1) {
         this.setState({ images: images });
       } else {
-        this.setState(prevState => ({
-          images: [...prevState.images, ...images],
-        }));
+        this.setState(
+          prevState => ({
+            images: [...prevState.images, ...images],
+            totalPages: totalPages,
+          }),
+          () => console.log('STATE', this.state)
+        );
       }
     } catch (error) {
       this.setState({ error });
@@ -79,24 +96,35 @@ export class App extends Component {
   render() {
     console.log('RENDER');
 
-    const { error, isLoading } = this.state;
+    const {
+      error,
+      isLoading,
+      images,
+      totalPages,
+      currentPage,
+      imageURL,
+      isModalOpen,
+    } = this.state;
 
-    if (error) {
-      return <div>Oops, something went wrong</div>;
-    }
-    if (isLoading) {
-      return console.log('Loading...');
-    }
     return (
       <div className="App">
+        {/* <Modal /> */}
+        {/* {isModalOpen && <Modal imageURL={imageURL} />} */}
+
         <SearchBar
           getQuery={this.getQuery}
           // searchQuery={this.state.searchQuery}
         />
-        <ImageGallery>
-          <ImageGalleryItem data={this.state.images} />
-        </ImageGallery>
-        <Button onClick={this.loadMore} />
+        {error && <h1>Oops, something went wrong</h1>}
+        {isLoading && <Loader />}
+        {images.length !== 0 && (
+          <ImageGallery>
+            <ImageGalleryItem data={this.state.images} saveURL={this.getURL} />
+          </ImageGallery>
+        )}
+        {images.length !== 0 && currentPage !== totalPages && (
+          <Button onClick={this.loadMore} />
+        )}
       </div>
     );
   }
