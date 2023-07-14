@@ -3,8 +3,8 @@
 export const ImageGalleryItem = ({ data }) => {
   return (
     <>
-      {data.map(({ largeImageURL, webformatURL, tags }) => (
-        <li className="ImageGalleryItem">
+      {data.map(({ largeImageURL, webformatURL, tags, id }) => (
+        <li className="ImageGalleryItem" key={id}>
           <div>
             <a href={largeImageURL}>
               <img

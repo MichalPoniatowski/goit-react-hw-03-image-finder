@@ -50,8 +50,8 @@ export class App extends Component {
     try {
       const { searchQuery, currentPage } = this.state;
       const images = await fetchFotos(searchQuery, currentPage);
-      console.log('IMAGES', images);
-      this.setState({ images: images });
+      console.log('IMAGES:', images);
+
       if (this.state.currentPage === 1) {
         this.setState({ images: images });
       } else {
