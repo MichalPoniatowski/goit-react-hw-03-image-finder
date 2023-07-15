@@ -1,18 +1,13 @@
-import './styles.css';
-
 import React, { Component } from 'react';
-// import Notiflix from "notiflix";
-// import axios from "axios";
-// import simpleLightbox from "simplelightbox";
-// import "simplelightbox/dist/simple-lightbox.min.css";
 
+import './styles.css';
 import { fetchFotos } from './services/fetchFotoApi';
 import { SearchBar } from './SearchBar';
 import { ImageGallery } from './ImageGallery/';
 import { ImageGalleryItem } from './ImageGalleryItem';
 import { Button } from './Button';
 import { Loader } from './Loader';
-// import { Modal } from './Modal';
+import { Modal } from './Modal';
 
 export class App extends Component {
   state = {
@@ -24,12 +19,26 @@ export class App extends Component {
     totalPages: 0,
     isModalOpen: false,
     imageURL: '',
+    imageAlt: '',
   };
 
-  getURL = imageURL => {
-    this.setState({ imageURL: imageURL, isModalOpen: true }, () =>
-      console.log('URL', imageURL, 'isModalOpen', this.state.isModalOpen)
+  getURL = (imageURL, alt) => {
+    this.setState(
+      { imageURL: imageURL, imageAlt: alt, isModalOpen: true },
+      () =>
+        console.log(
+          'URL',
+          imageURL,
+          'Alt',
+          alt,
+          'isModalOpen',
+          this.state.isModalOpen
+        )
     );
+  };
+
+  closeModal = () => {
+    this.setState({ isModalOpen: false });
   };
 
   getQuery = event => {
@@ -103,18 +112,17 @@ export class App extends Component {
       totalPages,
       currentPage,
       imageURL,
+      imageAlt,
       isModalOpen,
     } = this.state;
 
     return (
       <div className="App">
-        {/* <Modal /> */}
-        {/* {isModalOpen && <Modal imageURL={imageURL} />} */}
+        {isModalOpen && (
+          <Modal modalURL={imageURL} alt={imageAlt} onClose={this.closeModal} />
+        )}
 
-        <SearchBar
-          getQuery={this.getQuery}
-          // searchQuery={this.state.searchQuery}
-        />
+        <SearchBar getQuery={this.getQuery} />
         {error && <h1>Oops, something went wrong</h1>}
         {isLoading && <Loader />}
         {images.length !== 0 && (

@@ -23,9 +23,9 @@ import { nanoid } from 'nanoid';
 // };
 
 export const ImageGalleryItem = ({ data, saveURL }) => {
-  const handleClick = (event, url) => {
+  const handleClick = (event, url, alt) => {
     event.preventDefault();
-    saveURL(url);
+    saveURL(url, alt);
   };
 
   return (
@@ -35,7 +35,7 @@ export const ImageGalleryItem = ({ data, saveURL }) => {
           <div>
             <a
               href={largeImageURL}
-              onClick={event => handleClick(event, largeImageURL)}
+              onClick={event => handleClick(event, largeImageURL, tags)}
             >
               <img
                 src={webformatURL}
