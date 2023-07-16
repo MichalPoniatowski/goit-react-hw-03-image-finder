@@ -4,6 +4,7 @@ export const Loader = () => {
   return (
     <div>
       <ColorRing
+        className="loader"
         visible={true}
         height="80"
         width="80"

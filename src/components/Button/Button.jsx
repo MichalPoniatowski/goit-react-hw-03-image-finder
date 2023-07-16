@@ -1,3 +1,5 @@
+import './Button.css';
+
 export const Button = ({ onClick }) => {
   return (
     <div className="Button-Wrapper">

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import './styles.css';
+import './App.css';
 import { fetchFotos } from './services/fetchFotoApi';
 import { SearchBar } from './SearchBar';
 import { ImageGallery } from './ImageGallery/';
