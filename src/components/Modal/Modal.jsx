@@ -1,5 +1,5 @@
-import './Modal.css';
 import React, { Component } from 'react';
+import css from './Modal.module.css';
 
 export class Modal extends Component {
   componentDidMount() {
@@ -26,8 +26,8 @@ export class Modal extends Component {
     const { modalURL, alt } = this.props;
 
     return (
-      <div className="Overlay" onClick={this.handleBackdropClick}>
-        <div className="Modal">
+      <div className={css.Overlay} onClick={this.handleBackdropClick}>
+        <div className={css.Modal}>
           <img src={modalURL} alt={alt} />
         </div>
       </div>

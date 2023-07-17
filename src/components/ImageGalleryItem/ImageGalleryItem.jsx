@@ -1,5 +1,6 @@
-import './ImageGalleryItem.css';
+import React from 'react';
 import { nanoid } from 'nanoid';
+import css from './ImageGalleryItem.module.css';
 
 export const ImageGalleryItem = ({ data, saveURL }) => {
   const handleClick = (event, url, alt) => {
@@ -10,7 +11,7 @@ export const ImageGalleryItem = ({ data, saveURL }) => {
   return (
     <>
       {data.map(({ largeImageURL, webformatURL, tags }) => (
-        <li className="ImageGalleryItem" key={nanoid()}>
+        <li className={css.ImageGalleryItem} key={nanoid()}>
           <div>
             <a
               href={largeImageURL}
@@ -20,7 +21,7 @@ export const ImageGalleryItem = ({ data, saveURL }) => {
                 src={webformatURL}
                 alt={tags}
                 loading="lazy"
-                className="ImageGalleryItem-image"
+                className={css['ImageGalleryItem-image']}
               />
             </a>
           </div>
